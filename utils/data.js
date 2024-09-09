@@ -64,7 +64,6 @@ const descriptionsBodies = [
     'Where is everyone?',
     'Check out MDN documentation on MongoDB',
     'Hello world',
-    'Another possible solution to the algorithm',
     'The word for today is MongoDB',
     'Check my code?',
 ];
@@ -82,30 +81,25 @@ const possibleReactions = [
 
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const getRandomUsername = () =>
-    `${getRandomeArrItem(usernames)}`;
+const getRandomUsername = () => getRandomArrItem(usernames);
 
 const getRandomThoughts = (int) => {
     let results = [];
     for (let i = 0; i < int; i++) {
         results.push({
-            published: Math.random() < 0.5,
-            description: getRandomArrItem(descriptionsBodies),
-            advertiserFriendly: Math.random() < 0.5,
-            reactions: [...getThoughtReactions(3)],
+            thoughtText: getRandomArrItem(descriptionsBodies),
+            username: getRandomUsername(),
+            reactions: getThoughtReactions(3),
         });
     }
     return results;
 };
 
 const getThoughtReactions = (int) => {
-    if (int === 1) {
-        return getRandomArrItem(possibleReactions);
-    }
     let results = [];
     for (let i = 0; i < int; i++) {
         results.push({
-            reactionbody: getRandomArrItem(possibleReactions),
+            reactionBody: getRandomArrItem(possibleReactions),
             username: getRandomUsername(),
         });
     }
