@@ -1,59 +1,15 @@
+const { Types } = require('mongoose');
+
 const usernames = [
-    'Aaran_1',
-    'Aaren_2',
-    'Aarez_3',
-    'Aarman_4',
-    'Aaron_5',
-    'Aaron-James_5',
-    'Aarron_7',
-    'Aaryan_8',
-    'Aaryn_9',
-    'Aayan_01',
-    'Aazaan_02',
-    'Abaan_03',
-    'Abbas_04',
-    'Abdallah_05',
-    'Abdalroof_06',
-    'Abdihakim_07',
-    'Abdirahman_08',
-    'Abdisalam_09',
-    'Abdul_010',
-    'Abdul-Aziz_011',
-    'Abdulbasir_012',
-    'Abdulkadir_013',
-    'Abdulkarem_014',
-    'Ze_015',
-    'Zechariah_016',
-    'Zeek_017',
-    'Zeeshan_018',
-    'Zeid_019',
-    'Zein_11',
-    'Zen_12',
-    'Zendel_13',
-    'Zenith_14',
-    'Zennon_15',
-    'Zeph_16',
-    'Zerah_17',
-    'Zhen_18',
-    'Zhi_19',
-    'Zhong_20',
-    'Zhuo_21',
-    'Zi_22',
-    'Zidane_23',
-    'Zijie_24',
-    'Zinedine_25',
-    'Zion_26',
-    'Zishan_27',
-    'Ziya_28',
-    'Ziyaan_29',
-    'Zohaib_020',
-    'Zohair_021',
-    'Zoubaeir_022',
-    'Zubair_023',
-    'Zubayr_024',
-    'Zuriel_025',
-    ``,
+      'AaranZee', 'AaronPo', 'AmandaLi', 'AzaeliaFlo', 'JeffnStacy', 'MatthewKit',
+      'NicholasMc', 'StacynJeff', 'ZechariahBol', 'ZeekYer' 
 ];
+
+const emails = [
+    'email@me.com', 'myemail@email.com', 'itsanemail@mail.com', 'youremail@here.com',
+    'thismail@aol.com', 'emailme@gmail.com', 'whyisthishere@yahoo.com', 'yoshi@yahoo.com',
+    'yesplease@gmail.com', 'lastone@aol.com'
+]
 
 const descriptionsBodies = [
     'I disagree with the Javascript approach on set values',
@@ -81,29 +37,57 @@ const possibleReactions = [
 
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-const getRandomUsername = () => getRandomArrItem(usernames);
+const getRandomUsers = (int) => {
+    let results = [];
+    let usedUsernames = new Set(); // To track used usernames
+    let usedEmails = new Set(); // To track used emails
+    
+    while (results.length < int) {
+        const username = getRandomArrItem(usernames);
+        const email = getRandomArrItem(emails);
 
-const getRandomThoughts = (int) => {
+        if(!usedUsernames.has(username) && !usedEmails.has(email)) {
+
+            results.push({
+                username: username,
+                email: email,
+            });
+            usedUsernames.add(username);
+            usedEmails.add(email);
+        }
+    }
+    return results;
+};
+    
+const getRandomThoughts = (int, userIds) => {
+    if (!userIds || userIds.length === 0) {
+        throw new Error("User Ids are required to genrate thoughts.");
+    }
+    
     let results = [];
     for (let i = 0; i < int; i++) {
         results.push({
             thoughtText: getRandomArrItem(descriptionsBodies),
-            username: getRandomUsername(),
-            reactions: getThoughtReactions(3),
+            username: userIds[Math.floor(Math.random() * userIds.length)],
+            reactions: getThoughtReactions(3, userIds),
         });
     }
     return results;
 };
 
-const getThoughtReactions = (int) => {
+const getThoughtReactions = (int, userIds) => {
+    if (!userIds || userIds.length === 0) {
+        throw new Error("User IDs are required to generate reactions.");
+    }
+
     let results = [];
     for (let i = 0; i < int; i++) {
         results.push({
             reactionBody: getRandomArrItem(possibleReactions),
-            username: getRandomUsername(),
+            username: userIds[Math.floor(Math.random() * userIds.length)],
         });
     }
     return results;
 };
 
-module.exports = { getRandomUsername, getRandomThoughts, getThoughtReactions };
+module.exports = { getRandomUsers, getRandomThoughts, getThoughtReactions };

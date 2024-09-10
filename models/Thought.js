@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const dayjs = require('dayjs');
 
 const reactionSchema = new Schema(
@@ -14,7 +14,7 @@ const reactionSchema = new Schema(
         },
         username: {
             type: Schema.Types.ObjectId, 
-            ref: 'user',
+            ref: 'User',
             required: true,
         },
         createdAt: {
@@ -45,7 +45,7 @@ const thoughtSchema = new Schema(
         },
         username: {
             type: Schema.Types.ObjectId, 
-            ref: 'user',
+            ref: 'User',
             required: true
         },
         reactions: [reactionSchema], 

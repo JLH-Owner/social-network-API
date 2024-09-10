@@ -82,7 +82,7 @@ module.exports = {
             }
 
             const user = await User.findOneAndUpdate(
-                {videos: req.params.thoughtId},
+                {thoughts: req.params.thoughtId},
                 {$pull: { thoughts: req.params.thoughtId } },
                 { new: true }
             );
@@ -110,20 +110,20 @@ module.exports = {
                 return res.status(404).json({ message: 'No thought with this ID' });
             }
 
-            res.json(thought);
+            res.json(reaction);
         }   catch (err) {
             res.status(500).json(err);
         }
     },
     async removeThoughtReaction(req, res) {
         try {
-            const thought = await Thought.findOneAndUpdate(
+            const reaction = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
                 { $pull: { reactions: { reactionId: req.params.reactionId } } },
                 { runValidators: true, new: true }
             )
 
-            if (!thought) {
+            if (!reaction) {
                 return res.status(404).json({ message: 'No thought with this ID!' });
             }
 
