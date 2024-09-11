@@ -36,23 +36,24 @@ module.exports = {
     },
     async createThought(req, res) {
         try {
-            const thought = await Thought.create(req.body);
-            const user = await User.findOneAndUpdate(
-                { _id: req.body.userId },
-                { $addToSet: { thoughts: thought._id } },
-                { new: true }
-            );
+            const { thoughtText, username } = req.body;
+            const user = await User.findOne({ username });
 
             if (!user) {
                 return res
                     .status(404)
-                    .json({ message: 'Thought created, but found no user with that ID' });
+                    .json({ message: 'User not found!' });
             }
 
-            res.json('Created Thought 🎉');
+            const thought = await Thought.create({
+                thoughtText,
+                username: user._id,
+            });
+
+            res.status(201).json(thought, { message: 'Created Thought 🎉' });
         }   catch (err) {
-            console.log(err);
-            res.status(500).json(err);
+            console.error(err);
+            res.status(500).json({ message: 'An error occured while creating the thought.' });
         }
     },
     async updateThought(req, res) {
@@ -60,7 +61,7 @@ module.exports = {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
                 { $set: req.body },
-                { runValidators: true, new: true }
+                { runValidators: false, new: true }
             );
 
             if (!thought) {
