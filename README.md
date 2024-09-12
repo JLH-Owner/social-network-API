@@ -213,9 +213,13 @@ Collaborator: Anthony Harper
 ## Images
 
 ![Showing the "Find()" function in Insomnia](/assets/images/find-all-users.png)
-![Showing the "FindOne()" function in Insomnia](/assets/images/find-single-thought-with-reaction.png)
+![Showing the "FindOneAndDelete()" function in Insomnia](/assets/images/deleted-thought.png)
 ![Showing "addFriend" function in Insomnia](/assets/images/add-friend.png)
+![Showing MongoDB User Collection](/assets/images/mongodb-user-collection.png)
+![Showing MongoDB Thought Collection](/assets/images/mongodb-thought-collection.png)
 
 
 ## LINKS
 GitHub Repository: <a href="https://github.com/JLH-Owner/social-network-API">JLH-Owner/Social Network API</a>
+
+<a href="https://drive.google.com/file/d/1h9tT4pr0xIAcw56JYtzkOtic6iM8n19h/view?usp=drive_link">Link to Live Demo</a>
