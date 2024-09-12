@@ -37,20 +37,20 @@ module.exports = {
     async createThought(req, res) {
         try {
             const { thoughtText, username } = req.body;
-            const user = await User.findOne({ username });
 
+            const user = await User.findOne({ username });
             if (!user) {
                 return res
                     .status(404)
                     .json({ message: 'User not found!' });
             }
-
+            
             const thought = await Thought.create({
                 thoughtText,
                 username: user._id,
-            });
+            });            
 
-            res.status(201).json(thought, { message: 'Created Thought 🎉' });
+            return res.status(201).json(thought);
         }   catch (err) {
             console.error(err);
             res.status(500).json({ message: 'An error occured while creating the thought.' });
@@ -91,7 +91,7 @@ module.exports = {
             if (!user) {
                 return res
                 .status(404)
-                .json({ message: 'Thought created but no user with this ID!' });
+                .json({ message: 'An error occured while deleting the thought.' });
             }
 
             res.json({ message: 'Thought successfully deleted!' });
@@ -99,38 +99,54 @@ module.exports = {
             res.status(500).json(err);
         }
     },
-    async addThoughtReaction(req, res) {
+    async addReaction(req, res) {
         try {
-            const thought = await Thought.findOneAndUpdate(
-                { _id: req.params.thoughtId },
-                { $addToSet: { reactions: req.body } },
-                { runValidators: true, new: true }
+            const thoughtId = req.params.thoughtId;
+            const { reactionBody, username } = req.body;
+            
+            if (!reactionBody || !username) {
+                return res.status(404).json({ message: 'Reaction body and username are required.' });
+            }
+
+            const updatedThought = await Thought.findByIdAndUpdate(
+                thoughtId,
+                { $addToSet: { reactions: { reactionBody, username } } },
+                { new: true, runValidators: true }
             );
 
-            if (!thought) {
-                return res.status(404).json({ message: 'No thought with this ID' });
+            if (!updatedThought) {
+                return res.status(404).json({ message: 'No thought found with that ID' });
             }
 
-            res.json(reaction);
-        }   catch (err) {
-            res.status(500).json(err);
+            res.status(200).json(updatedThought);
+        }  catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'An error occurred while adding the reaction.' });
         }
     },
-    async removeThoughtReaction(req, res) {
+    async removeReaction(req, res) {
         try {
-            const reaction = await Thought.findOneAndUpdate(
-                { _id: req.params.thoughtId },
-                { $pull: { reactions: { reactionId: req.params.reactionId } } },
-                { runValidators: true, new: true }
-            )
+            const thoughtId = req.params.thoughtId;
+            const reactionId = req.params.reactionId;
 
-            if (!reaction) {
-                return res.status(404).json({ message: 'No thought with this ID!' });
+            if (!reactionId) {
+                return res.status(400).json({ message: 'Reaction ID is required.' });
             }
 
-            res.json(thought);
-        }   catch (err) {
-            res.status(500).json(err);
+            const updatedThought = await Thought.findByIdAndUpdate(
+                thoughtId,
+                { $pull: { reactions: { reactionId } } },
+                { new: true }
+            );
+
+            if (!updatedThought) {
+                return res.status(404).json({ message: 'No thought found by that ID!' });
+            }
+
+            res.status(200).json(updatedThought);
+        }  catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'An error occurred while removing the reaction.' });
         }
     },
 };

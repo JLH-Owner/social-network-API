@@ -14,7 +14,7 @@ const userSchema = new Schema(
             type: String,
             required: true,
             unique: true,
-            match: [/.+@.+\..+/, 'Must match a valid email address'],
+            match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Must match a valid email address'],
         },
         thoughtId: {
             type: Schema.Types.ObjectId, ref: 'Thought',            
@@ -22,7 +22,7 @@ const userSchema = new Schema(
         friends: {
             type: [Schema.Types.ObjectId], 
             ref: 'User',
-            default: [' '],
+            default: [],
         },
     },
     {
@@ -34,7 +34,7 @@ const userSchema = new Schema(
 );
 
 userSchema.virtual('friendCount').get(function() {
-    return this.friends ? this.friends.length: [];
+    return this.friends.length
 });
 
 const User = model('user', userSchema);
