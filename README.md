@@ -214,7 +214,7 @@ Collaborator: Anthony Harper
 
 ![Showing the "Find()" function in Insomnia](/assets/images/find-all-users.png)
 ![Showing the "FindOne()" function in Insomnia](/assets/images/find-single-thought-with-reaction.png)
-![Showing create function in Insomnia](/assets/images/create-user.png)
+![Showing "addFriend" function in Insomnia](/assets/images/add-friend.png)
 
 
 ## LINKS
