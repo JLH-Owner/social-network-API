@@ -222,4 +222,4 @@ Collaborator: Anthony Harper
 ## LINKS
 GitHub Repository: <a href="https://github.com/JLH-Owner/social-network-API">JLH-Owner/Social Network API</a>
 
-<a href="https://drive.google.com/file/d/1h9tT4pr0xIAcw56JYtzkOtic6iM8n19h/view?usp=drive_link">Link to Live Demo</a>
+<a href="https://drive.google.com/file/d/1h9tT4pr0xIAcw56JYtzkOtic6iM8n19h/view?usp=sharing">Link to Live Demo</a>
